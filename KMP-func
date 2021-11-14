@@ -1,0 +1,37 @@
+<script>
+    function GetPrefix(s) {
+        let result = Array(s.length);
+        for (let i = 0; i < s.length; i++) result[i] = 0;
+        let index = 0;
+
+        for (let i = 1; i < s.length; i++) {
+            while (index >= 0 && s[index] != s[i])
+                index--;
+            index++;
+            result[i] = index;
+        }
+
+        return result;
+    }
+
+    function FindSubstring(pattern, text) {
+        let res = -1;
+        let pf = GetPrefix(pattern);
+        let index = 0;
+
+        for (let i = 0; i < text.length; i++) {
+            while (index > 0 && pattern[index] != text[i])
+                index = pf[index - 1];
+            if (pattern[index] == text[i]) index++;
+            if (index == pattern.length)
+                return res = i - index + 1;
+        }
+
+        return res;
+    }
+
+    let a = "ababcaba"
+    let b = "ababcabaababcabaababcaba"
+    let res = FindSubstring(a, b)
+    console.log(res)
+</script>
