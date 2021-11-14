@@ -1,0 +1,50 @@
+<html>
+<script>
+  let diff = function (oldElements, newElements) {
+    let path;
+    let MAX = newElements.length + oldElements.length;
+    let offs = Math.floor(MAX / 2 + 1);
+    let V = []
+    let paths = [];
+    for (let i = 0; i < MAX + 1; i++) {
+      V.push(0);
+      paths.push('');
+    }
+    for (let D = 0; D < MAX; D++) {
+      for (let k = -D; k <= D; k += 2) {
+        let goDown = (k ===  -D) || ((k !== D) && (V[k - 1 + offs] < V[k + 1 + offs]));
+        let x, y;
+        if (goDown) {
+          x = V[k + 1 + offs];
+          path = paths[k + 1 + offs]
+          y = x - k;
+          if ((y > 0) && (y <= newElements.length)) path += '+' + newElements[y - 1];
+        } else {
+          x = V[k - 1 + offs] + 1;
+          path = paths[k - 1 + offs]
+          if ((x > 0) && (x <= oldElements.length)) path += '-' + oldElements[x - 1];
+        }
+        y = x - k;
+        while (x >= 0 && y >0 && (x < oldElements.length) && (y < newElements.length) && (oldElements[x] === newElements[y])) {
+          path += ' ' + newElements[y];
+          x += 1;
+          y += 1;
+        }
+        V[k + offs] = x;
+        paths[k + offs] = path;
+        if (x >= oldElements.length && y >= newElements.length) return path;
+      }
+    }
+  }
+  let res = diff('Hello world!', 'Goodbye cruel world!')
+  //let res = diff('Hello ', 'Goodbye ')
+  //let res = diff('AAC','CBCBAB')
+  //let res = diff('CDFA','LKIO') 
+  //let res = diff('ДВУТАВРШ2 №20К1 12000 С255', 'ДВУТАВРШ2 №20К2 12000 С255')
+  console.log(res)
+</script>
+
+<body>
+</body>
+
+</html>                  
