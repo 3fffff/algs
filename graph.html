@@ -1,0 +1,35 @@
+<script>
+    const V = []
+    const d = []
+    const visited = []
+    V.push({ start: 0, finish: 1, weight: 2 })
+    V.push({ start: 0, finish: 2, weight: 1 })
+    V.push({ start: 0, finish: 3, weight: 4 })
+    V.push({ start: 1, finish: 3, weight: 7 })
+    V.push({ start: 1, finish: 4, weight: 2.5 })
+    V.push({ start: 2, finish: 4, weight: 10 })
+    V.push({ start: 2, finish: 5, weight: 4 })
+    V.push({ start: 3, finish: 5, weight: 3 })
+    V.push({ start: 4, finish: 5, weight: 4 })
+    for (let i = 0; i < 6; i++) {
+        d.push(Number.MAX_SAFE_INTEGER)
+        visited.push(false)
+    }
+    d[0] = 0
+    for(let i=0;i<V.length;i++)
+        for(let j=0;j<d.length;j++)
+            if(d[V[i].finish]> d[V[i].start]+V[i].weight)
+                d[V[i].finish] = d[V[i].start]+V[i].weight
+    for (let i = 0; i < V.length; i++) {
+        let v = -1
+        for (let j = 0; j < V.length; j++)
+            if (!visited[j] && (v == -1 || d[V[j].start] < d[V[v].start]))
+                v = j
+        visited[v] = true
+        for (let j = 0; j < V.length; j++)
+            if (V[j].start == v && d[V[j].finish] > d[v] + V[j].weight)
+                d[V[j].finish] = d[v] + V[j].weight
+    }
+    console.log(V)
+    console.log(d)
+</script>
