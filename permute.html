@@ -1,0 +1,32 @@
+<script>
+    function swap(arr, i, j) {
+        const s = arr[i];
+        arr[i] = arr[j];
+        arr[j] = s;
+    }
+    function NextSet(arr) {
+        let j = arr.length - 2;
+        while (j != -1 && arr[j] >= arr[j + 1]) j--;
+        if (j == -1) return false; // больше перестановок нет
+        let k = arr.length - 1;
+        while (arr[j] >= arr[k]) k--;
+        swap(arr, j, k);
+        let l = j + 1, r = arr.length - 1; // сортируем оставшуюся часть последовательности
+        while (l < r) swap(arr, l++, r--);
+        return true;
+    }
+    function NextSetC(arr, n, m) {
+        for (let i = m - 1; i >= 0; --i)
+            if (arr[i] < n - m + i + 1) {
+                ++arr[i];
+                for (let j = i + 1; j < m; ++j)
+                    arr[j] = arr[j - 1] + 1;
+                return true;
+            }
+        return false;
+    }
+    let arr = [1, 2, 3, 4, 5]
+    //while (NextSet(arr)) console.log(arr)
+    console.log(arr)
+    while (NextSetC(arr, arr.length, 3)) console.log(arr)
+</script>
