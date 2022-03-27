@@ -195,6 +195,39 @@ public:
 		tail->Next = node;
 		tail = node;
 	}
+	bool findNode(T data) {
+		Node* current = head;
+		while (current) {
+			if (current->data == data)
+				return true;
+			current = current->next;
+		}
+		return false;
+	}
+	bool remove(T data) {
+		Node<T>* prev = nullptr;
+		Node<T>* current = head;
+		while (current) {
+			if (current->Data == data) {
+				if (prev != nullptr) {
+					prev->Next = current->Next;
+					if (prev->Next == nullptr)
+						tail = prev;
+				}
+				else {
+					head = current->Next;
+					if (head->Next == nullptr)
+						tail = nullptr;
+				}
+				count--;
+				return true;
+			}
+			prev = current;
+			//current = current->Next;
+			current = (*current).Next;
+		}
+		return false;
+	}
 };
 
 int main()
