@@ -1,18 +1,18 @@
 <html>
 <script>
     const nrzicode = "_|¯¯|____|¯|_|¯¯|_".replaceAll("|", "")//010100011101
-    let decode = ""
-    let signalChange = false
-    decode += signals[nrzicode[0]]
-    for (let i = 1; i < nrzicode.length; i++) {
-        if (nrzicode[i] != nrzicode[i - 1]) {
-            signalChange = true
-        }
-        const bit = signalChange ? 1 : 0
-        decode += bit
-        signalChange = false
-    }
+    const signals = { '_': '0', '¯': '1', '|': undefined }
+    const signalsInv = { '_': '¯', '¯': '_', '|': undefined }
+    let decode = signals[nrzicode[0]]
+    for (let i = 1; i < nrzicode.length; i++)
+        decode += nrzicode[i] != nrzicode[i - 1] ? 1 : 0
     console.log(decode)
+    const nrzi = "010100011101"
+    const pullBit = '1'
+    let encode = nrzi[0] == 0 ? '_' : '¯'
+    for (let i = 1; i < nrzi.length; i++)
+        encode += nrzi[i] == pullBit ? signalsInv[encode[i - 1]] : encode[i - 1]
+    console.log(encode)
 </script>
 
 </html>
