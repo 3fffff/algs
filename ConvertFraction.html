@@ -1,0 +1,34 @@
+<html>
+<script>
+    function ConvertFraction(input) {
+        const EPS = 4.656612873077e-10
+        const MAX = 99999
+
+        if (input > 99999) throw new Error("Conversion overflow")
+
+        let LAST_U = 1
+        let LAST_V = 0
+        let CURRENT_U = Math.floor(input)
+        let CURRENT_V = 1
+        let L_XF = input - CURRENT_U
+        while (L_XF > EPS) {
+            L_XF = 1 / L_XF
+            const L_AF = Math.floor(L_XF)
+            if (L_AF * CURRENT_U + LAST_U > MAX) break
+            if (L_AF * CURRENT_V + LAST_V > MAX) break
+            const L_A = Math.floor(L_XF)
+            const NEXT_U = L_A * CURRENT_U + LAST_U
+            const NEXT_V = L_A * CURRENT_V + LAST_V
+            LAST_U = CURRENT_U
+            LAST_V = CURRENT_V
+            CURRENT_U = NEXT_U
+            CURRENT_V = NEXT_V
+            L_XF = L_XF - L_A
+        }
+        return [CURRENT_U, CURRENT_V]
+    }
+    const nd = ConvertFraction(3.3574)
+    console.log(nd)
+</script>
+
+</html>
