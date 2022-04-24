@@ -1,0 +1,120 @@
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="GENERATOR" content="mySAP.com 1.0">
+    <link rel="stylesheet" href="ck_ecp_stylesheet.css" type="text/css">
+    <script language="javascript" type="text/javascript">
+        var max = 250;
+        var eName = "ck_ecp_edit";
+        var c = new String(" \t\r\n");
+        function createElement(name, value, type) {
+            var el;
+            el = document.createElement("input");
+            el.type = type;
+            el.name = name;
+            el.value = value;
+            return el;
+        }
+        function lTrim(str) {
+            var s = new String(str);
+            if (c.indexOf(s.charAt(0)) != -1) {
+                var len = s.length;
+                var i = 1;
+                while (i < len && (c.indexOf(s.charAt(i)) != -1)) {
+                    i++;
+                }
+                s = s.substring(i, len);
+            }
+            return s;
+        }
+        function rTrim(str) {
+            var s = new String(str);
+            var len = s.length;
+            if (c.indexOf(s.charAt(len - 1)) != -1) {
+                var i = len - 2;
+                while (i > 0 && (c.indexOf(s.charAt(i)) != -1)) {
+                    i--;
+                }
+                s = s.substring(0, i + 1);
+            }
+            return s;
+        }
+        function trim(str) {
+            return lTrim(rTrim(str));
+        }
+        function checkInput(form) {
+            var tArea = form.elements[eName];
+            if (tArea) {
+                tArea.value = tArea.value.replace(',');
+                tArea.value = trim(tArea.value);
+                text = tArea.value;
+                var length = text.length;
+                if (length > max) {
+                    if (length > 255) {
+                        text = text.substring(0, 255);
+                        length = 255;
+                    }
+                    var loop = Math.ceil(length / max);
+                    var start = 0;
+                    var cnt = 0;
+                    var take = max;
+                    var p, n, fld;
+                    while (cnt < loop) {
+                        p = text.substr(start, take);
+                        start += take;
+                        if ((start + take) > length) {
+                            take = (length - start);
+                        }
+                        n = eName + cnt;
+                        fld = createElement(n, p, "hidden");
+                        form.appendChild(fld);
+                        cnt++;
+                    }
+                    tArea.value = "";
+                }
+            }
+            return true;
+        }
+    </script>
+    <script>
+        function handleF4(str) {
+            document.all.FORM1.CK_ECP_F4_HANDLER.value = str;
+            document.all.FORM1.submit();
+            document.all.FORM1.CK_ECP_F4_HANDLER.value = "";
+        }
+    </script>
+</head>
+
+<body bgcolor="#95B2C3">
+    <form name="FORM1" method="POST" action="SAPEVENT:SUBMIT" onSubmit="return checkInput(this)">
+        <input type=hidden name="CK_ECP_F4_HANDLER" value="">
+        <div style="position: relative;">
+            <table class="table7" border="0" cellspacing="2" cellpadding="0" style="float:left">
+                <tr>
+                    <td class="header2" colspan="2">&nbsp;&nbsp;`DESC`&nbsp;&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="table8" valign="center" nowrap>&nbsp;&nbsp;`CHARS[ZKOL_DET].DESC`&nbsp;&nbsp;</td>
+                    <td bgcolor="#FFFFFF"><input class="text" type="text" name="ZKOL_DET" size="            17"
+                            value="`ZKOL_DET.value`" `CKECP.DISABLED`></td>
+                </tr>
+            </table>
+            <table class="table7" order="0" cellspacing="2" cellpadding="0">
+                <tr>
+                    <td class="header2" colspan="2">Данные</td>
+                </tr>
+                <tr>
+                    <td class="table8" valign="center" nowrap>&nbsp;&nbsp;`CHARS[ZSTKO_MEINS].DESC`&nbsp;&nbsp;</td>
+                    <td bgcolor="#FFFFFF"><input class="text" type="text" name="ZSTKO_MEINS" size="            18"
+                            value="`ZSTKO_MEINS.value`" `CKECP.DISABLED`></td>
+                </tr>
+            </table>
+        </div>
+    </form>
+    <script>
+
+    </script>
+</body>
+
+</html>
