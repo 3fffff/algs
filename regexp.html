@@ -7,5 +7,14 @@
     console.log(dataTime.test("30-1-2003 8:45"))
     console.log(/bad(ly)?/.exec())
     var quotedText = /'([^']*)'/;
+    const client = {
+        name: "smith",
+        age: 21
+    }
+    const incAge = (x = { ...client }) => x.age += 1
+    const changeName = (x = { ...client }) => {
+        x.age += 1
+        x.name = "Ivan"
+    }
 </script>
 </html>
