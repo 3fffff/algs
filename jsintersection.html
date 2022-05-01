@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<script>
+    const intersection = (firstObj, secondObj) => {
+        const firstKeys = Object.keys(firstObj)
+        return firstKeys.reduce((acc = {}, key) => {
+            if (firstObj[key] == secondObj[key]) {
+                acc = {
+                    ...acc,
+                    [key]: firstObj[key]
+                }
+            }
+            return acc;
+        }, {})
+    }
+</script>
+
+</html>
