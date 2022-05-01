@@ -1,0 +1,87 @@
+<script>
+    /* const arr = [1, 2, 74, 9, 3, 4, 5]
+     const arrf = arr.filter(item => item % 2 === 0).sort((a, b) => a - b)
+     let i = 0
+     const arrOdd = arr.map((val, index) => {
+         if (val % 2 === 0) val = arrf[i++]
+         return val
+     })
+     console.log(arrOdd)*/
+
+    class Tree {
+        constructor(data, tree = []) {
+            this.data = data;
+            this.trees = tree
+        }
+    }
+    const trr = new Tree()
+    function createTreeRec(level) {
+        let leafs = []
+        const rand = Math.ceil(Math.random() * 10)
+        for (let i = 0; i < 2; i++) {
+            leafs.push(new Tree(level))
+            if (level > 0) leafs[i].trees = createTreeRec(level - 1)
+        }
+        return leafs
+    }
+    function createTree(level) {
+        let leafs = []
+        let tmpLeaf = []
+        const rand = Math.ceil(Math.random * 10)
+        for (let i = 0; i < level; i++) {
+            for (let j = 0; j < 2; j++) {
+                
+            }
+        }
+    }
+    function traverseTree(tree) {
+        let sum = 0;
+        for (let i = 0; i < tree.length; i++) {
+            sum += tree[i].data
+            if (tree[i].trees !== undefined || tree[i].trees.length > 0) sum += traverseTree(tree[i].trees)
+        }
+        return sum
+    }
+    function travTree(tree) {
+        let sum = 0;
+        let tmpTree = tree.slice()
+        while (tmpTree.length > 0) {
+            const current = tmpTree.shift()
+            sum += current.data
+            current.trees.forEach(item => tmpTree.push(item))
+        }
+        return sum
+    }
+    const tr = createTreeRec(20)
+    //console.time()
+    //const sum = traverseTree(tr)
+    //console.timeEnd()
+    console.time()
+    const sum1 = travTree(tr)
+    console.timeEnd()
+    console.log(tr)
+    //console.log(sum)
+    console.log(sum1)
+    function person() {
+        let name = 'Peter';
+        return function () {
+            console.log(name)
+        }
+    }
+    var func2 = function () {
+        var num = -1
+        function incrementUntil(max) {
+            if (num >= max) return max
+            num++
+            incrementUntil(max)
+        }
+        incrementUntil(3)
+        return num
+    }
+    const tArr = [1, 2, 3, 4, 5]
+    for (var i = 0; i < tArr.length; i++) {
+        //function f(i) {
+        setTimeout(function (i_local) { console.log(tArr[i_local]) }, 3000, i)
+        //}
+    }
+</script>
