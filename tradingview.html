@@ -1,0 +1,122 @@
+<html>
+<script>
+    var ws = new WebSocket('wss://data.tradingview.com/socket.io/websocket');
+    console.log(ws)
+
+    session = "qs_" + generateSession()
+
+    chart_session = "cs_" + generateSession()
+    const rt = createMessage("chart_create_session", [chart_session, ""])
+    console.log(rt)
+
+    ws.onopen = function (event) {
+        console.log(event)
+        //sleep(500)
+        sendMessage(ws, "set_auth_token", ["eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxNzgwNTEzNiwiZXhwIjoxNjE1MTQ5Mzk0LCJpYXQiOjE2MTUxMzQ5OTQsInBsYW4iOiIiLCJleHRfaG91cnMiOjEsInBlcm0iOiIiLCJzdHVkeV9wZXJtIjoiUFVCO1RRdk45MFBCbHpnUm5iYnA4UHFwRHBpRW1nUGQ4eU9mIiwibWF4X3N0dWRpZXMiOjMsIm1heF9mdW5kYW1lbnRhbHMiOjAsIm1heF9jaGFydHMiOjF9.YBGJO6Jqh33P1eDX0z4qXSAuDJmrH-P6FJ8xiCZGQMh8pR-tsKwbBE_blGEvbdFPa_r1fS3zjPiJrVf4Hf36C-4d0wmunk8U_YRdT9GCCjg3cyZwK9Z85R3Dk5OGazfs97f2pmyDkuQfH9VZ-53-ZAzLJ1UVzAEhpODyJGxM-Sc"])
+        sendMessage(ws, "chart_create_session", [chart_session, ""])
+        //sleep(500)
+        sendMessage(ws, "quote_create_session", [session])
+        //sleep(500)
+        sendMessage(ws, "quote_set_fields",
+            [session, "ch", "chp", "current_session", "description", "local_description", "language", "exchange", "fractional", "is_tradable", "lp", "lp_time",
+                "minmov", "minmove2", "original_name", "pricescale", "pro_name", "short_name", "type", "update_mode", "volume", "currency_code", "rchp", "rtc"])
+        sendMessage(ws, "quote_add_symbols", [session, "BINANCE:BTCUSDTPERP", { "flags": ['force_permission'] }])
+        sendMessage(ws, "quote_fast_symbols", [session, "BINANCE:BTCUSDTPERP"])
+
+        sendMessage(ws, "resolve_symbol", [chart_session, "symbol_1", "={\"symbol\":\"BINANCE:BTCUSDTPERP\",\"adjustment\":\"splits\",\"session\":\"extended\"}"])
+        sendMessage(ws, "create_series", [chart_session, "s1", "s1", "symbol_1", "15", 300])
+        sendMessage(ws, "create_study", [chart_session, "st3", "st1", "s1", "Script@tv-scripting-101!", {
+            "pineVersion": "1.0",
+            "in_0": {
+                "v": 22,
+                "f": true,
+                "t": "integer"
+            },
+            "in_1": {
+                "v": 20,
+                "f": true,
+                "t": "integer"
+            },
+            "in_2": {
+                "v": 2,
+                "f": true,
+                "t": "float"
+            },
+            "in_3": {
+                "v": 50,
+                "f": true,
+                "t": "integer"
+            },
+            "in_4": {
+                "v": 0.85,
+                "f": true,
+                "t": "float"
+            },
+            "in_5": {
+                "v": 1.01,
+                "f": true,
+                "t": "float"
+            },
+            "in_6": {
+                "v": false,
+                "f": true,
+                "t": "bool"
+            },
+            "in_7": {
+                "v": false,
+                "f": true,
+                "t": "bool"
+            }
+        }])
+
+    }
+
+    ws.onmessage = function (event) {
+        console.log(event.data);
+    }
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    function generateLetters(stringLength) {
+        const arr = []
+        for (let i = 0; i < stringLength; i++)
+            arr.push(String.fromCharCode(i + 97))
+        return arr
+    }
+
+    function generateSession() {
+        stringLength = 12
+        letters = generateLetters(26)
+        let random_string = ""
+        for (let i = 0; i < stringLength; i++)
+            random_string += letters[getRandom(0, 25)]
+        return random_string
+    }
+
+    function prependHeader(st) {
+        return "~m~" + st.length.toString() + "~m~" + st
+    }
+
+    function getRandom(min, max) {
+        return ~~(Math.random() * (max - min) + min);
+    }
+    function sendMessage(ws, func, args) {
+        ws.send(createMessage(func, args))
+    }
+
+    function constructMessage(func, paramList) {
+        return `{
+            "m": "${func.toString()}",
+            "p": ${JSON.stringify(paramList)}
+        }`.replace(/\s/g, '');
+    }
+
+
+    function createMessage(func, paramList) {
+        return prependHeader(constructMessage(func, paramList))
+    }
+</script>
+
+</html>
