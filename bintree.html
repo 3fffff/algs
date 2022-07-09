@@ -1,0 +1,93 @@
+<script>
+  class binNode {
+    constructor(value) {
+      this.left = null
+      this.right = null
+      this.value = value
+    }
+  }
+  class binTree {
+    constructor() {
+      this.root = null
+    }
+    addValue(value) {
+      if (this.root == null) {
+        this.root = new binNode(value)
+      } else {
+        inserValue(this.root, value)
+      }
+    }
+    insertVal(value){
+      let current = this.root
+      while(current == null){
+        if(value.compareTo(current.getElement())<=-1)
+          current = current.left
+        else if(value.compareTo(current.getElement())>=1)
+          current = current.right
+        else {
+          console.log("duplicate")
+        }
+      }
+    }
+    inserValue(subTree, value) {
+      if (subTree.value < value) {
+        if (!subTree.left) {
+          subTree.left = new binNode(value)
+          return
+        }
+        insertValue(subTree.left)
+      } else {
+        if (!subTree.right) {
+          subTree.right = new binNode(value)
+          return
+        }
+        insertValue(subTree.right)
+      }
+    }
+    preorder(node = this.root) {
+      console.log(node.value)
+      inorder(node.left)
+      inorder(node.right)
+    }
+    findMinVal() {
+      current = this.root
+      while (!current.left)
+        current = current.left
+      return current
+    }
+    remove(value) {
+      this.root = removeNode(this.root, value)
+    }
+    removeNode(node, value) {
+      if (node == null)
+        return null
+      if (node.value < value) {
+        node.left = removeNode(node.left, value)
+        return node
+      }
+      else if (node.value > value) {
+        node.right = removeNode(node.right)
+      }
+      else {
+        if (node.left == null && node.right == null) {
+          node = null
+          return node
+        }
+
+        if (node.left === null) {
+          node = node.right;
+          return node;
+        }
+        else if (node.right === null) {
+          node = node.left;
+          return node;
+        }
+        const aux = this.findMinNode(node.right);
+        node.data = aux.data;
+ 
+        node.right = this.removeNode(node.right, aux.data);
+        return node;
+      }
+    }
+  }
+</script>
