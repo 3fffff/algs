@@ -28,3 +28,15 @@
             return res;
         }
     }
+        static int BinSearchReq(int[] arr,int low,int high,int target) {
+            int mid = low + (int)Math.Floor((double)((high - low) / 2));
+            if (arr[mid] == target)
+                return low;
+            if (arr[mid] > target)
+                high = mid-1;
+            if (arr[mid] < target)
+                low = mid+1;
+            if (low < high)
+                return BinSearchReq(arr, low, high, target);
+            else return -1;
+        }
